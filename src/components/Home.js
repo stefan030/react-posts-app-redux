@@ -1,24 +1,15 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Ball from '../ball.png';
+import { connect } from 'react-redux';
+// connect is a function, which we will invoke to bring back HOC
 
-export default class Home extends Component {
-    state = {
-        posts: []
-    };
 
-    componentDidMount() { // Lifecycle hook - After the component mounts, we will
-        axios.get('https://jsonplaceholder.typicode.com/posts')
-            .then(res => {
-                this.setState({
-                    posts: res.data.slice(0, 10)
-                })
-            })
-    }
 
+class Home extends Component {
     render() {
-        const { posts } = this.state;
+        console.log(this.props);
+        const { posts } = this.props;
         const postList = posts.length ? (
             posts.map(post => {
                 return(
@@ -45,3 +36,15 @@ export default class Home extends Component {
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        posts: state.posts
+    }
+};
+
+
+// connect() will return Higher Order Component and that Higher Order Component will wrap Home component
+// Connect Home component to Redux store
+export default connect(mapStateToProps)(Home);
+
